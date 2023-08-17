@@ -1,0 +1,15 @@
+{
+    "watch": [
+        "src/app/**/*.ts",
+        "src/utils/**/*.ts",
+        "src/controller/**/*.ts",
+        "src/middleware/**/*.ts",
+        "src/router/**/*.ts",
+        "src/service/**/*.ts",
+        "src/types/**/*.ts",
+        "./src/main.ts"
+    ],
+    "ignore": ["node_modules"],
+    "exec": "ts-node ./src/main.ts",
+    "ext": ".ts"
+}
