@@ -1,4 +1,3 @@
-import path from "path";
 import config from "../app/config";
 import { CoverURLFn } from "../types/utils";
 
@@ -11,8 +10,6 @@ const coverUrlHandle: CoverURLFn = (data) => {
     if (/^(http|https):\/\//.test(data.cover)) {
       return data;
     } else {
-        console.log(data.cover);
-        
       data.cover = `${rootPath}/${data.cover}`;
     }
   } else {
@@ -22,7 +19,7 @@ const coverUrlHandle: CoverURLFn = (data) => {
       if (/^(http|https):\/\//.test(item.cover)) {
         return item;
       } else {
-        item.cover =`${rootPath}/${item.cover}`
+        item.cover = `${rootPath}/${item.cover}`;
         return item;
       }
     });

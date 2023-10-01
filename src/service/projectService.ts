@@ -14,7 +14,13 @@ class ProjectService {
 
     return result;
   }
-  
+  // 列表总数据量
+  async getListCounts(){
+    const statement = `SELECT COUNT(*) AS counts FROM project`
+
+    const [result] = await connections.execute(statement)
+    return result
+  }
   // 添加项目
   async create(
     link: string,

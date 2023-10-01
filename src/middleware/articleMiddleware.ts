@@ -1,11 +1,12 @@
 import { Context, Next } from "koa";
-import { Article, ArticleId, ArticleList } from "../types/article";
+import { ArticleId, ArticleListParams, CreateArticle } from "../types/article";
 import errorTypes from "../types/errorTypes";
 import ReContext from "../types/reContext";
 
 class articleMiddleware {
   async verifyGetArticleListParams(ctx: Context, next: Next) {
-    const { page, size } = ctx.query as Partial<ArticleList>;
+    const { page, size } = ctx.query as Partial<ArticleListParams>;
+
     if (!(page && size))
       return ctx.app.emit(
         "error",
@@ -34,15 +35,10 @@ class articleMiddleware {
   }
 
   async verifyCreateArticleParams(
-    ctx: ReContext<null, Partial<Article>>,
+    ctx: ReContext<null, Partial<CreateArticle>>,
     next: Next
   ) {
-    const {
-      title,
-      content,
-      type = "public",
-      imgList,
-    } = ctx.req.body as Article;
+    const { title, content, type = "public" } = ctx.req.body as CreateArticle;
 
     if (!(title && content && ["public", "private"].includes(type)))
       return ctx.app.emit(
@@ -50,6 +46,7 @@ class articleMiddleware {
         new Error(errorTypes.ARGUMENT_DEFICIENCY),
         ctx
       );
+
     await next();
   }
 }

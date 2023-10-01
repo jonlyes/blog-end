@@ -8,6 +8,7 @@ type USER_DOES_NOT_EXISTS = "user_does_not_exists";
 type PASSWORD_IS_ERROR = "password_is_error";
 type UN_AUTHORIZATION = "un_authorization";
 type UN_PERMISSION = "un_permission";
+type RESOURCE_DOES_NOT_EXIST = "RESOURCE_DOES_NOT_EXIST";
 
 class ErrorType {
   NAME_OR_PASSWORD_IS_REQUIRED: NAME_OR_PASSWORD_IS_REQUIRED =
@@ -24,6 +25,7 @@ class ErrorType {
   UN_AUTHORIZATION: UN_AUTHORIZATION = "un_authorization";
 
   UN_PERMISSION: UN_PERMISSION = "un_permission";
+  RESOURCE_DOES_NOT_EXIST: RESOURCE_DOES_NOT_EXIST = "RESOURCE_DOES_NOT_EXIST";
 }
 
 export type {
@@ -35,6 +37,7 @@ export type {
   PASSWORD_IS_ERROR,
   UN_AUTHORIZATION,
   UN_PERMISSION,
+  RESOURCE_DOES_NOT_EXIST,
 };
 
 export default new ErrorType();

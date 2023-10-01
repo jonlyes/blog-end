@@ -15,6 +15,10 @@ class ProjectController {
 
     const result = (await projectService.getList(page, size)) as CoverURLArg;
 
+    const [{ counts }] = (await projectService.getListCounts()) as [
+      { counts: number }
+    ];
+
     // 处理数据的cover
     const newResult = coverUrlHandle(result);
 
@@ -22,6 +26,7 @@ class ProjectController {
       code: 200,
       msg: "查询成功",
       data: newResult,
+      counts,
     };
   }
 
