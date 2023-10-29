@@ -8,6 +8,13 @@ import staticFiles from "koa-static";
 
 const app: Koa = new Koa();
 
+// const fileRouter = new Router({
+//     prefix: "/file",
+//   });
+
+//   // 上传图片
+//   fileRouter.post('/uploadImg',fileMiddleware.uploadImgHandle(),fileMiddleware.uploadImgParams,file.uploadImg)
+
 // 处理跨域
 app.use(cors());
 
@@ -15,10 +22,10 @@ app.use(cors());
 app.use(staticFiles(path.resolve(__dirname, "..", "../uploads")));
 
 // 处理请求体
-app.use(bodyParser());
+app.use(bodyParser({}));
 
 // 注册路由
-useRouters(app,'default');
+useRouters(app, "default");
 
 // 错误处理
 app.on("error", errorHandle);

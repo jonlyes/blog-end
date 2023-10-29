@@ -18,7 +18,7 @@ class AuthController {
     });
 
     ctx.body = {
-      code: 200,
+      code: 201,
       msg: "查询成功",
       data: {
         token,
@@ -46,7 +46,7 @@ class AuthController {
     await authService.createUser(username, password);
 
     ctx.body = {
-      code: 200,
+      code: 201,
       msg: "注册成功",
     };
   }

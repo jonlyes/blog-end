@@ -9,7 +9,7 @@ const fileRouter = new Router({
 
 
 // 上传图片
-fileRouter.post('/uploadImg/',fileMiddleware.uploadImgHandle(),fileMiddleware.uploadImgParams,file.uploadImg)
+fileRouter.post('/uploadImg',fileMiddleware.uploadImgHandle(),fileMiddleware.uploadImgParams,file.uploadImg)
 
 
 export default fileRouter;

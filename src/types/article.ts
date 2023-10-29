@@ -1,20 +1,14 @@
+// 可见类型
+type visibleType = "public" | "private";
+
 interface ArticleListParams {
   page: string;
   size: string;
 }
 
+
 interface ArticleId {
   articleId: string;
-}
-
-// 可见类型
-type visibleType = "public" | "private";
-
-interface CreateArticle {
-  title: string;
-  content: string;
-  type: visibleType;
-  imgList: string[];
 }
 
 interface ArticleListItem {
@@ -37,11 +31,25 @@ interface ArticleDetail {
   updateAt: string;
 }
 
+interface CreateArticle {
+  title: string;
+  content: string;
+  type: visibleType;
+  cover: string;
+}
+interface UpdateArticle {
+  title: string;
+  content: string;
+  type: visibleType;
+  cover:string
+}
+
 export type {
   ArticleListParams,
-  CreateArticle,
   ArticleId,
-  visibleType,
   ArticleListItem,
-  ArticleDetail
+  ArticleDetail,
+  CreateArticle,
+  UpdateArticle,
+  visibleType,
 };

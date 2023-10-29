@@ -1,8 +1,7 @@
 import { Context } from "koa";
-import { ProjectList } from "../types/project";
+import { ProjectList, ProjectListItem } from "../types/project";
 import projectService from "../service/projectService";
 import coverUrlHandle from "../utils/covrtURL";
-import { CoverURLArg } from "../types/utils";
 import ReContext from "../types/reContext";
 import { CoverOptions } from "../types/file";
 import { Project } from "./../types/project";
@@ -13,7 +12,10 @@ class ProjectController {
   async list(ctx: Context) {
     const { page, size } = ctx.query as unknown as ProjectList;
 
-    const result = (await projectService.getList(page, size)) as CoverURLArg;
+    const result = (await projectService.getList(
+      page,
+      size
+    )) as ProjectListItem[];
 
     const [{ counts }] = (await projectService.getListCounts()) as [
       { counts: number }
@@ -23,7 +25,7 @@ class ProjectController {
     const newResult = coverUrlHandle(result);
 
     ctx.body = {
-      code: 200,
+      code: 201,
       msg: "查询成功",
       data: newResult,
       counts,
@@ -49,7 +51,7 @@ class ProjectController {
       );
 
       ctx.body = {
-        code: 200,
+        code: 201,
         msg: "添加项目成功",
         data: result,
       };

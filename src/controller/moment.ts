@@ -26,7 +26,7 @@ class momentController {
     const newResult = pictureURL(result)
 
     ctx.body = {
-      code: 200,
+      code: 201,
       msg: "查询成功",
       data: newResult,
       counts,

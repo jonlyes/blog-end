@@ -1,7 +1,6 @@
 import Router from "koa-router";
 import article from "../controller/article";
 import authMiddleware from "../middleware/authMiddleware";
-import fileMiddleware from "../middleware/fileMiddleware";
 import articleMiddleware from "../middleware/articleMiddleware";
 
 const articleRouter = new Router({
@@ -29,16 +28,25 @@ articleRouter.post(
   "/",
   articleMiddleware.verifyCreateArticleParams,
   authMiddleware.verifyAuth,
+  articleMiddleware.articleCoverHandle,
   article.createArticle
 );
 
 // 修改博客文章
 articleRouter.put(
   "/:articleId",
+  articleMiddleware.verifyUpdateArticleParams,
   authMiddleware.verifyAuth,
-  // fileMiddleware.coverHandle("article"),
-  fileMiddleware.renameCoverHandle,
+  articleMiddleware.articleCoverHandle,
   article.updateArticle
 );
+
+// 删除博客文章
+articleRouter.delete(
+  '/:articleId',
+  articleMiddleware.verifyDeleteArticleParams,
+  authMiddleware.verifyAuth,
+  article.deleteArticle
+)
 
 export default articleRouter;

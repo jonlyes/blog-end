@@ -53,6 +53,7 @@ class AuthMiddleware {
   async verifyAuth(ctx: Context, next: Next) {
     // 获取token
     const authorization = ctx.headers.authorization as string;
+    
 
     // 没有登录
     if (!authorization) {
@@ -67,8 +68,10 @@ class AuthMiddleware {
       });
 
       ctx.user = result;
+      
       await next();
     } catch (err) {
+
       return ctx.app.emit("error", new Error(errorTypes.UN_AUTHORIZATION), ctx);
     }
   }

@@ -7,10 +7,8 @@ import {
   ArticleListItem,
   CreateArticle,
   ArticleDetail,
+  UpdateArticle,
 } from "../types/article";
-import { CoverOptions } from "../types/file";
-import ReContext from "../types/reContext";
-import { CoverURLArg } from "../types/utils";
 import errorTypes from "../types/errorTypes";
 
 class articleController {
@@ -26,7 +24,7 @@ class articleController {
       page,
       size,
       userId
-    )) as CoverURLArg;
+    )) as ArticleListItem[];
 
     // 数据总量
     const [{ counts }] = (await articleService.getListCounts(userId)) as [
@@ -37,7 +35,7 @@ class articleController {
     const newResult = coverUrlHandle(result);
 
     ctx.body = {
-      code: 200,
+      code: 201,
       msg: "查询成功",
       data: newResult,
       counts,
@@ -50,61 +48,65 @@ class articleController {
     // 不一定有userId
     const userId = ctx.user?.userId;
 
-    const result = (await articleService.getDetail(
-      articleId
-      // userId
-    )) as ArticleDetail[];
+    const result = (await articleService.getDetail(articleId)) as ArticleDetail;
 
-    if (!result.length) {
+    if (!result) {
       return ctx.app.emit(
         "error",
         new Error(errorTypes.RESOURCE_DOES_NOT_EXIST),
         ctx
       );
-    } else if (userId === undefined && result[0].type === "private") {
+    } else if (userId === undefined && result.type === "private") {
       return ctx.app.emit("error", new Error(errorTypes.UN_PERMISSION), ctx);
     }
 
     // 处理数据的cover
-    const newResult = coverUrlHandle(result[0]);
+    result.cover = coverUrlHandle(result.cover) as string;
 
     ctx.body = {
-      code: 200,
+      code: 201,
       msg: "查询成功",
       // 处理数据的cover
-      data: newResult,
-    };
-  }
-  // 添加博客文章
-  async createArticle(ctx: ReContext<CoverOptions, Partial<CreateArticle>>) {
-    let {
-      title,
-      content,
-      imgList = [],
-      type = "public",
-    } = ctx.req.body as unknown as CreateArticle;
-
-    const result = await articleService.create(
-      title,
-      imgList[0] || "images/default.jpg",
-      content,
-      type,
-      imgList || []
-    );
-
-    ctx.body = {
-      code: 200,
-      msg: "添加博客文章成功",
       data: result,
     };
   }
-  // 修改博客文章 (没写完)
-  async updateArticle(ctx: ReContext<CoverOptions, Partial<CreateArticle>>) {
-    const { articleId } = ctx.params;
-    const { title, content, type } = ctx.req.body as Partial<CreateArticle>;
-    const cover: CoverOptions | undefined = ctx.req?.file as CoverOptions;
+  // 添加博客文章
+  async createArticle(ctx: Context) {
+    let { title, content, type } = ctx.request.body as CreateArticle;
+    const cover = ctx.cover as string;
+    
 
-    const options = { title, content };
+    const result = await articleService.create(title, cover, content, type);
+
+    ctx.body = {
+      code: 201,
+      msg: "创建成功",
+      data: result,
+    };
+  }
+  // 修改博客文章
+  async updateArticle(ctx: Context) {
+    const { articleId } = ctx.params;
+    const { title, content, type } = ctx.request.body as UpdateArticle;
+
+    const cover = ctx.cover as string;
+
+    await articleService.update(title, content, cover, type, articleId);
+
+    ctx.body = {
+      code: 201,
+      msg: "更新成功",
+    };
+  }
+  async deleteArticle(ctx: Context) {
+    const { articleId } = ctx.params;
+
+    await articleService.delete(articleId);
+
+    ctx.body = {
+      code: 201,
+      msg: "删除成功",
+    };
   }
 }
 
