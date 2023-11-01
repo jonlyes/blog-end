@@ -1,4 +1,5 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     // "target": "es2016",
     // "module": "commonjs",
@@ -14,11 +15,12 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist"
   },
   "exclude": [
     "node_modules/**/*"
   ],
   "include": [
     "**/**/*"
-  ]
+  ],
 }

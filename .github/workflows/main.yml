@@ -1,12 +1,15 @@
-name: Unit Testing
+name: end-automate-deploy
 
-on:
-  push:
-  pull_request:
-    branches:
-      - main
-    types:
-      - merged
+on: [push]
+
+env: 
+  APP_HOST: ${{ secrets.APP_HOST }}
+  APP_PROT: ${{ secrets.APP_PROT }}
+  MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+  MYSQL_PROT: ${{ secrets.MYSQL_PROT }}
+  MYSQL_USER: ${{ secrets.MYSQL_USER }}
+  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  MYSQL_NAME: ${{ secrets.MYSQL_NAME }}
 
 jobs:
   test:
@@ -22,15 +25,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Configure env
+        run: npm run env
 
-      - name: Setup Environment Variables and Run Tests
-        run: |
-          export NODE_ENV=test
-          export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
-          export MYSQL_PORT=${{ secrets.MYSQL_PORT }}
-          export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
-          export MYSQL_USER=${{ secrets.MYSQL_USER }}
-          export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          npm test
+      - name: server
+        uses: easingthemes/ssh-deploy@v4
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "/"
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          TARGET: ${{ secrets.SSH_TARGET }}
+          run: |
+            cd /home/blog-start/
+            pm2 stop blog-end
+            npm install
+            pm2 restart blog-end
