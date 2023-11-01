@@ -38,7 +38,7 @@ jobs:
           REMOTE_USER: ${{ secrets.SSH_USER }}
           TARGET: ${{ secrets.SSH_TARGET }}
           run: |
-            cd /home/blog-start/
+            cd /home/blog-end/
             pm2 stop blog-end
             npm install
             pm2 restart blog-end
