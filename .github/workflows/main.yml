@@ -1,0 +1,36 @@
+name: Unit Testing
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+    types:
+      - merged
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Setup Environment Variables and Run Tests
+        run: |
+          export NODE_ENV=test
+          export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
+          export MYSQL_PORT=${{ secrets.MYSQL_PORT }}
+          export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+          export MYSQL_USER=${{ secrets.MYSQL_USER }}
+          export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          npm test
