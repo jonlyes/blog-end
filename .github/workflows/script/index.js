@@ -1,5 +1,4 @@
-// const fs = require('fs')
-import fs from "fs";
+const fs = require('fs')
 // 配置.env
 
 const env = process.env || {};
@@ -25,7 +24,11 @@ fs.writeFile("../../.env", content, (err) => {
     console.log(err);
   } else {
     fs.unlink("../../.env example", (err) => {
-      console.log("删除失败:" + err);
+      if(err){
+        console.log("删除失败:" + err);
+      }else{
+        console.log('删除成功');
+      }
     });
     console.log(".env配置成功");
   }
