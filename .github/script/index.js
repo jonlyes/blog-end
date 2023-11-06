@@ -18,11 +18,11 @@ MYSQL_NAME=${env.MYSQL_NAME}
 # token key
 JWT_KEY=jonlyesblog
 `
-
 fs.writeFile('./.env', content, err => {
     if (err) {
         console.log(err);
     } else {
+        console.log(content);
         console.log('.env配置成功');
     }
 })

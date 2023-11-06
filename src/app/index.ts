@@ -16,7 +16,7 @@ const app: Koa = new Koa();
 //   fileRouter.post('/uploadImg',fileMiddleware.uploadImgHandle(),fileMiddleware.uploadImgParams,file.uploadImg)
 
 // 处理跨域
-app.use(cors());
+app.use(cors({}));
 
 // 设置静态资源
 app.use(staticFiles(path.resolve(__dirname, "..", "../uploads")));
