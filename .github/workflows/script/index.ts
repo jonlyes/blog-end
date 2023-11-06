@@ -1,8 +1,8 @@
 // const fs = require('fs')
-import fs from 'fs'
+import fs from "fs";
 // 配置.env
 
-const env =  process.env || {}
+const env = process.env || {};
 
 const content = `
 # 服务器
@@ -18,14 +18,15 @@ MYSQL_NAME=${env.MYSQL_NAME}
 
 # token key
 JWT_KEY=jonlyesblog
-`
-console.log(content);
+`;
 
-fs.writeFile('../../.env1', content, err => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(content);
-        console.log('.env配置成功');
-    }
-})
+fs.writeFile("../../.env", content, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    fs.unlink("../../.env example", (err) => {
+      console.log("删除失败:" + err);
+    });
+    console.log(".env配置成功");
+  }
+});
