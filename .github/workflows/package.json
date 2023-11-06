@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "env": "ts-node script/index.ts"
+    "env": "node script/index.js"
   },
   "keywords": [],
   "author": "",
