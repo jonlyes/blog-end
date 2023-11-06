@@ -1,7 +1,8 @@
-const fs = require('fs')
+// const fs = require('fs')
+import fs from 'fs'
 // 配置.env
 
-const env = process.env | {}
+const env =  process.env || {}
 
 const content = `
 # 服务器
@@ -18,7 +19,9 @@ MYSQL_NAME=${env.MYSQL_NAME}
 # token key
 JWT_KEY=jonlyesblog
 `
-fs.writeFile('./.env', content, err => {
+console.log(content);
+
+fs.writeFile('../../.env1', content, err => {
     if (err) {
         console.log(err);
     } else {

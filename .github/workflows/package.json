@@ -1,0 +1,12 @@
+{
+  "name": "workflows",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "env": "ts-node script/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
