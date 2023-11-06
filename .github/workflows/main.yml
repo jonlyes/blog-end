@@ -2,7 +2,7 @@ name: end-automate-deploy
 
 on: [push]
 
-env: 
+env:
   APP_HOST: ${{ secrets.APP_HOST }}
   APP_PROT: ${{ secrets.APP_PROT }}
   MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -12,33 +12,32 @@ env:
   MYSQL_NAME: ${{ secrets.MYSQL_NAME }}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 18.x ]
-    steps:
-      - uses: actions/checkout@v4
+  runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      node-version: [18.x]
+  steps:
+    - uses: actions/checkout@v4
 
-      - name: setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+    - name: setup Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
 
-      - name: Configure env
-        run: npm run env
+    - name: Configure env
+      run: npm run env
 
-      - name: server
-        uses: easingthemes/ssh-deploy@v4
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: "/"
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          TARGET: ${{ secrets.SSH_TARGET }}
-          run: |
-            cd /home/blog-end/
-            pm2 stop blog-end
-            npm install
-            pm2 restart blog-end
+    - name: server
+      uses: easingthemes/ssh-deploy@v4
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-rlgoDzvc -i --delete"
+        SOURCE: "/"
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: ${{ secrets.SSH_USER }}
+        TARGET: ${{ secrets.SSH_TARGET }}
+        run: |
+          cd /home/blog-end/
+          pm2 stop blog-end
+          npm install
+          pm2 restart blog-end
